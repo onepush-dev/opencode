@@ -2,7 +2,7 @@
 
 [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/TEMPLATE_CODE)
 
-[OpenCode](https://opencode.ai) is the open-source AI coding agent (214k+ GitHub stars). It reads your code, edits files, runs commands and works with 75+ model providers. This template runs **OpenCode v1.19.3** as `opencode serve`: the API plus the **embedded web UI** on your Railway domain, behind a **generated password**. Your projects, sessions, provider logins and config live on a volume. Nothing needs to be filled in at deploy time, and it works without an API key: OpenCode's free Zen models (for example `big-pickle`) are ready on first boot.
+[OpenCode](https://opencode.ai) is the open-source AI coding agent (214k+ GitHub stars). It reads your code, edits files, runs commands and works with any model provider (Anthropic, OpenAI, Google, OpenRouter, local models and many more). This template runs **OpenCode v1.19.3** as `opencode serve`: the API plus the **embedded web UI** on your Railway domain, behind a **generated password**. Your projects, sessions, provider logins and config live on a volume. Nothing needs to be filled in at deploy time, and it works without an API key: OpenCode's free Zen models (for example `big-pickle`) are ready on first boot.
 
 ## Why this template
 - **Official build, current and pinned:** the image is the upstream `ghcr.io/anomalyco/opencode:1.19.3` (pinned by digest) with a thin layer on top. Nothing uses `latest`, and the auto-updater is off, so a redeploy never changes the version on you.
