@@ -1,0 +1,16 @@
+# Reference config. Railway can't build from this repo directly (no GitHub app access),
+# so the template deploys the prebuilt image by digest:
+#   ghcr.io/onepush-dev/opencode:1.19.3@sha256:9a248429018cfcec9e51416ae5e85c78c45bb6c4b9e61141d7f18e435bedd6a3
+# built by .github/workflows/image.yml from ./Dockerfile (official ghcr.io/anomalyco/opencode:1.19.3 + git/bash/ssh/node/python).
+# Volume: /data (one volume holds HOME and the workspace). Public domain -> port 4096.
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# No start command: the image ENTRYPOINT runs `opencode serve --hostname 0.0.0.0 --port $PORT`.
+# Healthcheck: /site.webmanifest is the only path OpenCode serves without basic auth (returns 200).
+healthcheckPath = "/site.webmanifest"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
