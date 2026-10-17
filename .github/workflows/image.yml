@@ -1,0 +1,47 @@
+name: Build image
+
+# Builds ghcr.io/onepush-dev/opencode from the official upstream image (pinned by digest in the Dockerfile)
+# plus git/bash/ssh/node/python and the Railway entrypoint. The Railway template deploys it by digest.
+on:
+  push:
+    branches: [main]
+    paths: ["Dockerfile", "railway-entrypoint.sh", ".github/workflows/image.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  OPENCODE_VERSION: "1.19.3"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Short SHA
+        id: vars
+        run: echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          provenance: false
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/opencode:${{ env.OPENCODE_VERSION }}
+            ghcr.io/${{ github.repository_owner }}/opencode:${{ env.OPENCODE_VERSION }}-${{ steps.vars.outputs.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ env.OPENCODE_VERSION }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.description=OpenCode ${{ env.OPENCODE_VERSION }} web UI + server for Railway
+            org.opencontainers.image.licenses=MIT
