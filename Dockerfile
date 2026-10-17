@@ -27,5 +27,5 @@ RUN chmod 0755 /usr/local/bin/railway-entrypoint.sh
 
 WORKDIR /data/workspace
 EXPOSE 4096
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/railway-entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "-s", "--", "/usr/local/bin/railway-entrypoint.sh"]
 CMD []
